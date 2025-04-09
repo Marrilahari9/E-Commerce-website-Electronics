@@ -22,18 +22,26 @@ namespace ElectronicsStore.API.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        public string PasswordHash { get; set; } = string.Empty;
+        [StringLength(255, MinimumLength = 6)]
+        public string PasswordHash { get; set; } = string.Empty; // Use hashed password
 
         [Phone]
+        [StringLength(15)]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
+        [StringLength(200)]
         public string Address { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(20)]
+        public string Role { get; set; } = "User"; // ✅ Role column added
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
 
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        // Navigation property for future use
+        public ICollection<Order>? Orders { get; set; }
     }
-} 
+}

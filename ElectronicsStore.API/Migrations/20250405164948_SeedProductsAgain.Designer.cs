@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicsStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250402143133_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250405164948_SeedProductsAgain")]
+    partial class SeedProductsAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,44 @@ namespace ElectronicsStore.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 10,
+                            Category = "Laptop",
+                            Description = "13-inch, 2023, 8GB RAM, 256GB SSD",
+                            ImageUrl = "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mba15-skyblue-select-202503?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1741885366344",
+                            Name = "MacBook Air M2",
+                            Price = 99999m,
+                            Rating = 0.0,
+                            Reviews = 0,
+                            Stock = 0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "Laptop",
+                            Description = "15.6-inch, Ryzen 7, 16GB RAM",
+                            ImageUrl = "https://p1-ofp.static.pub/ShareResource/na/products/ideapad/1060x596/lenovo-ideapad-slim-5-16inch-amd-abyss-blue-01.png",
+                            Name = "Lenovo IdeaPad Slim 5",
+                            Price = 59999m,
+                            Rating = 0.0,
+                            Reviews = 0,
+                            Stock = 0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "Laptop",
+                            Description = "14-inch, i5, 8GB RAM, 512GB SSD",
+                            ImageUrl = "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08928130.png?imwidth=270&imdensity=1&impolicy=Png_Res",
+                            Name = "HP Pavilion x360",
+                            Price = 65999m,
+                            Rating = 0.0,
+                            Reviews = 0,
+                            Stock = 0
+                        });
                 });
 
             modelBuilder.Entity("ElectronicsStore.API.Models.User", b =>
@@ -141,7 +179,8 @@ namespace ElectronicsStore.API.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -163,11 +202,18 @@ namespace ElectronicsStore.API.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

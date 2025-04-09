@@ -1,180 +1,145 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { ProductService, Product } from '../services/product.service';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { Product } from '../models/product.model';
 
 @Component({
   selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatExpansionModule
-  ]
+  imports: [CommonModule, FormsModule],
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css'] // ✅ Re-added with new styles
 })
-export class ProductsComponent implements OnInit {
-  products: Product[] = [];
-  filteredProducts: Product[] = [];
-  searchText: string = '';
-  selectedCategory: string = '';
-  sortBy: string = '';
-  editingProduct: Product | null = null;
-  isAdmin = true; // For testing, you should implement proper admin authentication
+export class ProductsComponent {
+  isAdmin = true;
+
+  searchText = '';
+  selectedCategory = '';
+  sortBy = '';
+
+  products: Product[] = [
+    {
+      id: 1,
+      name: 'iPhone 15',
+      description: 'Apple smartphone',
+      price: 56999,
+      category: 'Smartphones',
+      stock: 20,
+      imageUrl: 'https://m.media-amazon.com/images/I/71d7rfSl0wL.jpg',
+      rating: 4.5,
+      reviews: 10
+    },
+    {
+      id: 2,
+      name: 'Samsung Galaxy S23',
+      description: 'Samsung flagship phone',
+      price: 56900,
+      category: 'Smartphones',
+      stock: 15,
+      imageUrl: 'https://m.media-amazon.com/images/I/610Q2I5Or8L.jpg',
+      rating: 4.2,
+      reviews: 8
+    },
+    {
+    
+      id: 3,
+      name: 'Samsung Galaxy F62',
+      description: 'Samsung flagship phone',
+      price: 36900,
+      category: 'Smartphones',
+      stock: 15,
+      imageUrl: 'https://www.gizmochina.com/wp-content/uploads/2021/02/f62.jpg',
+      rating: 4.7,
+      reviews: 6
+    },
+    {
+    
+      id: 4,
+      name: 'Dell Inspiron 15',
+      description: '15.6-inch FHD Laptop, 11th Gen Intel i5, 8GB RAM, 512GB SSD',
+      price: 58900,
+      category: 'Laptop',
+      stock: 15,
+      imageUrl: 'https://m.media-amazon.com/images/I/817hATbspxL.jpg',
+      rating: 4.7,
+      reviews: 6
+    },
+    {
+    
+      id: 5,
+      name: 'HP Pavilion x360',
+      description: '14-inch Touchscreen 2-in-1 Laptop, i5 12th Gen, 16GB RAM, 512GB SSD',
+      price: 68900,
+      category: 'Laptop',
+      stock: 15,
+      imageUrl: 'https://uniquec.com/wp-content/uploads/x360-435.jpg',
+      rating: 4.7,
+      reviews: 6
+    },
+    {
+    
+      id: 6,
+      name: 'Lenovo IdeaPad Slim 5',
+      description: '15.6-inch FHD Laptop, 11th Gen Intel i5, 8GB RAM, 512GB SSD',
+      price: 87900,
+      category: 'Laptop',
+      stock: 15,
+      imageUrl: 'https://m.media-amazon.com/images/I/817hATbspxL.jpg',
+      rating: 4.7,
+      reviews: 6
+    },
+
+
+    // ➕ Add more if needed
+  ];
+
   newProduct: Product = {
     id: 0,
     name: '',
     description: '',
     price: 0,
-    imageUrl: '',
     category: '',
     stock: 0,
+    imageUrl: '',
     rating: 0,
     reviews: 0
   };
 
-  constructor(private productService: ProductService) { }
+  get filteredProducts(): Product[] {
+    let filtered = this.products;
 
-  ngOnInit(): void {
-    this.loadProducts();
-  }
-
-  loadProducts(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-        this.filteredProducts = data;
-        this.applyFilters();
-      },
-      error: (error) => {
-        console.error('Error loading products:', error);
-      }
-    });
-  }
-
-  applyFilters(): void {
-    let filtered = [...this.products];
-
-    // Apply search filter
     if (this.searchText) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        product.description.toLowerCase().includes(this.searchText.toLowerCase())
-      );
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(this.searchText.toLowerCase()));
     }
 
-    // Apply category filter
     if (this.selectedCategory) {
-      filtered = filtered.filter(product =>
-        product.category === this.selectedCategory
-      );
+      filtered = filtered.filter(p => p.category === this.selectedCategory);
     }
 
-    this.filteredProducts = filtered;
-    this.sortProducts();
-  }
-
-  sortProducts(): void {
-    switch (this.sortBy) {
-      case 'name':
-        this.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'price':
-        this.filteredProducts.sort((a, b) => a.price - b.price);
-        break;
-      case '-price':
-        this.filteredProducts.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        this.filteredProducts.sort((a, b) => b.rating - a.rating);
-        break;
-    }
-  }
-
-  addToCart(product: Product): void {
-    // TODO: Implement cart functionality
-    console.log('Adding to cart:', product);
-    alert(`Added ${product.name} to cart`);
-  }
-
-  addProduct(): void {
-    if (!this.newProduct.name || !this.newProduct.description || this.newProduct.price <= 0) {
-      alert('Please fill in all required fields correctly');
-      return;
+    if (this.sortBy === 'price') {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else if (this.sortBy === 'rating') {
+      filtered = filtered.sort((a, b) => b.rating - a.rating);
     }
 
-    this.productService.addProduct(this.newProduct).subscribe({
-      next: (product) => {
-        this.products.push(product);
-        this.applyFilters(); // Refresh the filtered list
-        this.resetNewProduct();
-        alert('Product added successfully!');
-      },
-      error: (error) => {
-        console.error('Error adding product:', error);
-        alert('Failed to add product. Please try again.');
-      }
-    });
+    return filtered;
   }
 
-  startEdit(product: Product): void {
-    this.editingProduct = { ...product };
-  }
+  applyFilters() {}
 
-  saveEdit(): void {
-    if (this.editingProduct) {
-      this.productService.updateProduct(this.editingProduct).subscribe(
-        () => {
-          this.loadProducts();
-          this.editingProduct = null;
-        },
-        (error) => {
-          console.error('Error updating product:', error);
-        }
-      );
-    }
-  }
+  addProduct() {
+    const newId = this.products.length + 1;
+    const productToAdd = { ...this.newProduct, id: newId };
+    this.products.push(productToAdd);
 
-  cancelEdit(): void {
-    this.editingProduct = null;
-  }
-
-  deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id).subscribe(
-        () => {
-          this.products = this.products.filter(p => p.id !== id);
-        },
-        (error) => {
-          console.error('Error deleting product:', error);
-        }
-      );
-    }
-  }
-
-  private resetNewProduct(): void {
     this.newProduct = {
       id: 0,
       name: '',
       description: '',
       price: 0,
-      imageUrl: '',
       category: '',
       stock: 0,
+      imageUrl: '',
       rating: 0,
       reviews: 0
     };

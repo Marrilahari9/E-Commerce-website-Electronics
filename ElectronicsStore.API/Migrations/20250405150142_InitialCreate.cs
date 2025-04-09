@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ElectronicsStore.API.Migrations
 {
     /// <inheritdoc />
@@ -40,9 +42,10 @@ namespace ElectronicsStore.API.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -101,6 +104,16 @@ namespace ElectronicsStore.API.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Category", "Description", "ImageUrl", "Name", "Price", "Rating", "Reviews", "Stock" },
+                values: new object[,]
+                {
+                    { 1, "Laptop", "13-inch, 2023, 8GB RAM, 256GB SSD", "https://m.media-amazon.com/images/I/71f5Eu5lJSL._SL1500_.jpg", "MacBook Air M2", 99999m, 0.0, 0, 0 },
+                    { 2, "Laptop", "15.6-inch, Ryzen 7, 16GB RAM", "https://m.media-amazon.com/images/I/81TmwvD3M+L._SL1500_.jpg", "Lenovo IdeaPad Slim 5", 59999m, 0.0, 0, 0 },
+                    { 3, "Laptop", "14-inch, i5, 8GB RAM, 512GB SSD", "https://m.media-amazon.com/images/I/71fw2xkWQ3L._SL1500_.jpg", "HP Pavilion x360", 65999m, 0.0, 0, 0 }
                 });
 
             migrationBuilder.CreateIndex(

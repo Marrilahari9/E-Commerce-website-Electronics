@@ -4,6 +4,7 @@ using ElectronicsStore.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicsStore.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250405150142_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,10 +133,10 @@ namespace ElectronicsStore.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 10,
+                            Id = 1,
                             Category = "Laptop",
                             Description = "13-inch, 2023, 8GB RAM, 256GB SSD",
-                            ImageUrl = "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/mba15-skyblue-select-202503?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1741885366344",
+                            ImageUrl = "https://m.media-amazon.com/images/I/71f5Eu5lJSL._SL1500_.jpg",
                             Name = "MacBook Air M2",
                             Price = 99999m,
                             Rating = 0.0,
@@ -142,10 +145,10 @@ namespace ElectronicsStore.API.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 2,
                             Category = "Laptop",
                             Description = "15.6-inch, Ryzen 7, 16GB RAM",
-                            ImageUrl = "https://p1-ofp.static.pub/ShareResource/na/products/ideapad/1060x596/lenovo-ideapad-slim-5-16inch-amd-abyss-blue-01.png",
+                            ImageUrl = "https://m.media-amazon.com/images/I/81TmwvD3M+L._SL1500_.jpg",
                             Name = "Lenovo IdeaPad Slim 5",
                             Price = 59999m,
                             Rating = 0.0,
@@ -154,10 +157,10 @@ namespace ElectronicsStore.API.Migrations
                         },
                         new
                         {
-                            Id = 12,
+                            Id = 3,
                             Category = "Laptop",
                             Description = "14-inch, i5, 8GB RAM, 512GB SSD",
-                            ImageUrl = "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08928130.png?imwidth=270&imdensity=1&impolicy=Png_Res",
+                            ImageUrl = "https://m.media-amazon.com/images/I/71fw2xkWQ3L._SL1500_.jpg",
                             Name = "HP Pavilion x360",
                             Price = 65999m,
                             Rating = 0.0,
